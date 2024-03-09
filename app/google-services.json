@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "296374868434",
+    "firebase_url": "https://srmb-canteen-corner-default-rtdb.firebaseio.com",
+    "project_id": "srmb-canteen-corner",
+    "storage_bucket": "srmb-canteen-corner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296374868434:android:da33082f416e3b820e900b",
+        "android_client_info": {
+          "package_name": "com.example.srmbcanteencorner.funoverflow"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBruYp3Tw5gKjIuiH0WvWwNnXL9AcWVRbg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296374868434:android:50da475d731962360e900b",
+        "android_client_info": {
+          "package_name": "com.example.srmbcanteencorner.srmbcanteencorner.funoverflow"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBruYp3Tw5gKjIuiH0WvWwNnXL9AcWVRbg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
