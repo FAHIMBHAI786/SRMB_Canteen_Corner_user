@@ -27,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
             val email = Email.text.toString()
             val password = Password.text.toString()
 
-            mAuth.signInWithEmailAndPassword(email, password)
+            mAuth.signInWithEmailAndPassword("$email@gmail.com", password)
                 .addOnCompleteListener { task: Task<AuthResult?> ->
                     if (task.isSuccessful) {
                         val intent = Intent(this, MainActivity::class.java)

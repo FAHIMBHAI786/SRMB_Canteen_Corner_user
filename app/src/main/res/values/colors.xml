@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="blue">#5194BC</color>
+    <color name="applogo">#3598DB</color>
+    <color name="receiver">#5B5D5E</color>
+    <color name="yellow">#AAFF00</color>
+    <color name="edittext">#EEF0F1</color>
+    <color name="pink">#AA00FF</color>
 </resources>
