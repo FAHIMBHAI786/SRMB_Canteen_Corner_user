@@ -1,5 +1,7 @@
 package com.example.srmbcanteencorner.srmbcanteencorner.funoverflow
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,18 +14,54 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.firestore.auth.User
+
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var logoutButton: Button
+    private lateinit var auth: FirebaseAuth
     private lateinit var mDatabase: DatabaseReference
+    private var isPressed = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        auth = FirebaseAuth.getInstance()
+
+        logoutButton = findViewById(R.id.logoutButton)
+        logoutButton.setOnClickListener {
+            // Call signOut() to log the user out
+            auth.signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            finish()
+            startActivity(intent)
+            // Optionally, navigate to the login screen or perform other actions
+        }
+
+
+
+        val Lunch = findViewById<Button>(R.id.Lunch)
+        Lunch.setOnClickListener {
+            if (isPressed) {
+                // If button is already pressed, revert to original state
+                Lunch.text = "Cancel Order"
+                saveLunchData(true)
+                Lunch.setBackgroundResource(R.drawable.button_pressed_state)
+            } else {
+                // If button is not pressed, update to pressed state
+                Lunch.text = "Order Lunch"
+                saveLunchData(false)
+
+
+            }
+            // Toggle the flag
+            isPressed = !isPressed
+        }
 
         val UserDetails = findViewById<TextView>(R.id.userDetails)
 
@@ -41,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                     // Check if data exists for the current user
                     if (snapshot.exists()) {
                         // Get user details from the snapshot
-                        val userDetails = snapshot.getValue(com.example.srmbcanteencorner.srmbcanteencorner.funoverflow.User::class.java)
+                        val userDetails = snapshot.getValue(User::class.java)
 
                         // Display user details in the TextView
                         userDetails?.let {
@@ -87,5 +125,33 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
         }
         return null
+    }
+    override fun onPause() {
+        super.onPause()
+        val sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putString("lastActivity", "Home")
+        editor.apply()
+    }
+    private fun saveLunchData(hasLunch: Boolean) {
+        // Implement code to save lunch data to the database
+        // For example, you can use Firebase Realtime Database or Firestore
+        // Here is a pseudo-code example using Firebase Realtime Database
+        val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
+        currentUserUid?.let { uid ->
+            val timestamp = Calendar.getInstance().timeInMillis
+            val lunchRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("lunch")
+            val lunchData = mapOf(
+                "hasLunch" to hasLunch,
+                "timestamp" to timestamp
+            )
+            lunchRef.setValue(lunchData)
+                .addOnSuccessListener {
+                    // Data successfully saved
+                }
+                .addOnFailureListener { error ->
+                    // Handle the error
+                }
+        }
     }
 }
