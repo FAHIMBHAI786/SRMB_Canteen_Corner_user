@@ -19,7 +19,10 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -140,11 +143,13 @@ class MainActivity : AppCompatActivity() {
         val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
         currentUserUid?.let { uid ->
             val timestamp = Calendar.getInstance().timeInMillis
-            val lunchRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("lunch")
+            val currentDate = getCurrentDate()
+            val currentTime = getCurrentTime()
+            val lunchRef = FirebaseDatabase.getInstance().getReference("orders").child(currentDate).child(uid).child("lunch")
             val lunchData = mapOf(
                 "hasLunch" to hasLunch,
-                "timestamp" to timestamp
-            )
+                "timestamp" to currentTime
+             )
             lunchRef.setValue(lunchData)
                 .addOnSuccessListener {
                     // Data successfully saved
@@ -153,5 +158,13 @@ class MainActivity : AppCompatActivity() {
                     // Handle the error
                 }
         }
+    }
+    private fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return dateFormat.format(Date())
+    }
+    private fun getCurrentTime(): String {
+        val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+        return timeFormat.format(Date())
     }
 }
